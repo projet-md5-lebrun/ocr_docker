@@ -3,32 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Detection with Flask</title>
+    <title>VoxScan</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 20px;
+        }
+
+        h1, h2 {
+            color: #000000;
+            text-align: center; /* Centrer le texte */
+        }
+
+        form {
+            margin-bottom: 20px;
+            text-align: center; /* Centrer le texte */
+        }
+
+        input[type="file"] {
+            margin-right: 10px;
+        }
+
+        .result-container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            text-align: center; /* Centrer le texte */
+        }
+
+        .result-text {
+            font-size: 16px;
+            color: #000000;
+            margin-bottom: 5px;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            text-align: center; /* Centrer le texte */
+        }
+
+        .no-text-message {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Text Detection with Flask</h1>
-    
-    <form method="post" enctype="multipart/form-data">
-        <input type="file" name="image" accept="image/*" required>
-        <button type="submit">Process Image</button>
-    </form>
-    
-    {% if texts %}
-        <h2>Extracted Texts (EasyOCR):</h2>
-        <ul>
-            {% for text in texts %}
-                <li>{{ text }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No texts extracted (EasyOCR).</p>
-    {% endif %}
-    
-    {% for result in results %}
-        <div>
-            <img src="data:image/jpeg;base64,{{ result.0 }}" alt="Detected Text">
-            <p>{{ result.1 }}</p>
+    <div class="container">
+        <h1 class="mt-3">VoxScan</h1>
+        <h2 class="mt-3">Extract, read text from an image</h2>
+        <div style="text-align: center; padding: 20px;">
+            <form method="post" enctype="multipart/form-data">
+                <div class="form-group mx-auto" style="max-width: 300px;">
+                    <label for="image" style="font-size: 18px; font-weight: bold;">Select your image :</label>
+                    <br>
+                    <input type="file" id="image" name="image" accept="image/*" class="form-control-file" required>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary" style="font-size: 16px;">Submit</button>
+            </form>
         </div>
-    {% endfor %}
+        
+        
+        {% if results %}
+            <div class="result-container">
+                <h2>Texte extrait:</h2>
+                <span class="result-text">
+                    {% for result in results %}
+                        {{ result.1 }}
+                    {% endfor %}
+                </span>
+            </div>
+        {% elif image_path %}
+            <p class="no-text-message">Echec.</p>
+        {% endif %}
+        
+    </div>
 </body>
 </html>
