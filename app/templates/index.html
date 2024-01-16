@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Detection with Flask</title>
+</head>
+<body>
+    <h1>Text Detection with Flask</h1>
+    
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*" required>
+        <button type="submit">Process Image</button>
+    </form>
+    
+    {% if texts %}
+        <h2>Extracted Texts (EasyOCR):</h2>
+        <ul>
+            {% for text in texts %}
+                <li>{{ text }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No texts extracted (EasyOCR).</p>
+    {% endif %}
+    
+    {% for result in results %}
+        <div>
+            <img src="data:image/jpeg;base64,{{ result.0 }}" alt="Detected Text">
+            <p>{{ result.1 }}</p>
+        </div>
+    {% endfor %}
+</body>
+</html>

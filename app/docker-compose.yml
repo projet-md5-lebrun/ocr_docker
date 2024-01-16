@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5001:5001"
+    volumes:
+      - .:/app
+    depends_on:
+      - easyocr-service
+
+  easyocr-service:
+    image: jaidedai/easyocr:latest
+    command: ["-l", "en"]
+    volumes:
+      - .:/app
