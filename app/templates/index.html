@@ -24,11 +24,15 @@
         <p>No texts extracted (EasyOCR).</p>
     {% endif %}
     
-    {% for result in results %}
-        <div>
-            <img src="data:image/jpeg;base64,{{ result.0 }}" alt="Detected Text">
-            <p>{{ result.1 }}</p>
-        </div>
-    {% endfor %}
+    {% if results %}
+        {% for result in results %}
+            <div>
+                <img src="data:image/jpeg;base64,{{ result.0 }}" alt="Detected Text">
+                <p>{{ result.1 }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No results available.</p>
+    {% endif %}
 </body>
 </html>
