@@ -1,34 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Detection with Flask</title>
+    <title>VoxScan</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #F7BE6F;
+            margin: 0;
+            padding: 0;
+            color: #fff;
+        }
+
+        h1 {
+            text-align: center;
+            font-family: 'Roboto', sans-serif;
+            font-weight: bold;
+            font-size: 4em; /* Augmente la taille du titre h1 */
+        }
+    
+        h2 {
+            text-align: center;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-size: 1.5em; /* Diminue la taille du titre h2 */
+        }
+        
+        form {
+            text-align: center;
+            margin: 20px auto;
+            max-width: 300px;
+        }
+
+        input[type="file"] {
+            margin-right: 10px;
+        }
+
+        .container {
+            padding: 20px;
+            text-align: center;
+            margin: 50px auto; /* Augmente les marges supérieure et inférieure */
+        }
+    
+        .result-container {
+            margin-top: 50px; /* Augmente la marge supérieure */
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            text-align: center;
+            color: #000;
+        }
+
+        .result-text {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .no-text-message {
+            color: #0000FF;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: #478ac9; /* Change la couleur de fond en bleu */
+            border-color: #478ac9; /* Change la couleur de la bordure en bleu */
+            color: #fff; /* Change la couleur du texte en blanc */
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 50px; /* Rend le bouton rond */
+        }
+    
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            color: #fff;
+        }
+
+        footer {
+            background-color: #478ac9;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .u-link {
+            color: #fff;
+        }
+
+        .u-backlink {
+            background-color: #478ac9;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Text Detection with Flask</h1>
-    
-    <form method="post" enctype="multipart/form-data">
-        <input type="file" name="image" accept="image/*" required>
-        <button type="submit">Process Image</button>
-    </form>
-    
-    {% if texts %}
-        <h2>Extracted Texts (EasyOCR):</h2>
-        <ul>
-            {% for text in texts %}
-                <li>{{ text }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No texts extracted (EasyOCR).</p>
-    {% endif %}
-    
-    {% for result in results %}
-        <div>
-            <img src="data:image/jpeg;base64,{{ result.0 }}" alt="Detected Text">
-            <p>{{ result.1 }}</p>
+    <div class="container">
+        <h1>VoxScan</h1>
+        <h2>​Donnez vie à vos images textuelles, écoutez et saisissez l’essentiel en un clin d’œi​​l​</h2>
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-group mx-auto" style="max-width: 300px;">
+                <label for="image">Sélectionner une image :</label>
+                <br>
+                <input type="file" id="file" name="file" accept="image/*" class="form-control-file" required>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">Envoyer</button>
+        </form>
+
+        {% if results %}
+        <div class="result-container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>Texte extrait :</h2>
+                    <ul class="list-group">
+                        <li class="list-group-item">{{ texts }}</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h2>Texte résumé :</h2>
+                    <ul class="list-group">
+                        <li class="list-group-item">{{ summary }}</li>
+                    </ul>
+                </div>
+            </div>
         </div>
-    {% endfor %}
+        {% else %}
+        {% endif %}
+
+        <div class="text-center mt-3">
+            {% if audio_stream %}
+            <audio controls>
+                <source src="data:audio/mpeg;base64,{{ audio_stream }}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            {% endif %}
+        </div>
+    </div>
+
+ 
 </body>
+
 </html>
