@@ -17,7 +17,7 @@ RUN pip install -r requirements.txt
 RUN apt-get update && \
     apt-get install -y libgl1-mesa-glx
     
-EXPOSE 5001
+EXPOSE 8000
 
 # Run app.py when the container launches
-CMD ["python", "app.py"]
+CMD ["python", "app.py", "--host"]
