@@ -4,3 +4,4 @@ numpy==1.26.3
 torch==2.0.0
 easyocr==1.7.0
 Pillow==8.0.0
+gtts==2.5.0
