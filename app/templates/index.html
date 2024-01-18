@@ -57,6 +57,15 @@
             <button type="submit" class="btn btn-primary">Process Image</button>
         </form>
         
+        <form action="/text_to_speech" method="post">
+            <button type="submit">Convert OCR Text to Speech</button>
+        </form>
+
+        <audio controls>
+            <source src="./app/output.mp3" type="audio/mp3">
+            
+          </audio>
+          
         {% if results %}
             <div class="result-container">
                 <h2>Extracted Texts (EasyOCR):</h2>
@@ -73,6 +82,7 @@
         {% if image_path %}
             <img src="{{ image_path }}" alt="Image Preview" class="image-preview">
         {% endif %}
+        
     </div>
 </body>
 </html>
