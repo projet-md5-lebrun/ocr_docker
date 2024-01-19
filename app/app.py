@@ -8,11 +8,12 @@ import pytesseract
 from gtts import gTTS
 from transformers import pipeline
 
-summarizer = pipeline("summarization",  model="Falconsai/text_summarization")
+summarizer = pipeline("summarization", model="Falconsai/text_summarization")
 
 app = Flask(__name__)
 
 # Set the TESSDATA_PREFIX environment variable
+
 
 def ocr_text(image_data):
     try:
@@ -21,6 +22,7 @@ def ocr_text(image_data):
     except Exception as e:
         print(f"Error in OCR: {e}")
         return None
+
 
 def text_to_speech(text):
     """
@@ -37,6 +39,8 @@ def text_to_speech(text):
     except SpecificException as e:
         print(f"Error: {e}")
         return None
+
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     results = None
@@ -48,22 +52,41 @@ def index():
         file = request.files['file']
         if file and file.filename != '':
             # Read image data from the file
-            image_data = cv2.imdecode(np.frombuffer(file.read(), np.uint8), cv2.IMREAD_UNCHANGED)
+            image_data = cv2.imdecode(
+                np.frombuffer(
+                    file.read(),
+                    np.uint8),
+                cv2.IMREAD_UNCHANGED)
             results = ocr_text(image_data)
 
             if results:
                 texts = [result.strip() for result in results.split('\n')]
                 texts = ' '.join(texts)
-                summaries = summarizer(results, max_length=1300, min_length=30, do_sample=False)
+                summaries = summarizer(
+                    results,
+                    max_length=1300,
+                    min_length=30,
+                    do_sample=False)
                 if summaries and 'summary_text' in summaries[0]:
                     summary = summaries[0]['summary_text']
                     audio_stream = text_to_speech(summary)
 
                 if audio_stream:
-                    audio_encoded = base64.b64encode(audio_stream.read()).decode('utf-8')
-                    return render_template('index.html', results=results, texts=texts, summary=summary, audio_stream=audio_encoded)
+                    audio_encoded = base64.b64encode(
+                        audio_stream.read()).decode('utf-8')
+                    return render_template(
+                        'index.html',
+                        results=results,
+                        texts=texts,
+                        summary=summary,
+                        audio_stream=audio_encoded)
 
-    return render_template('index.html', texts=texts, summary=summary, audio_stream=None)
+    return render_template(
+        'index.html',
+        texts=texts,
+        summary=summary,
+        audio_stream=None)
+
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000, debug=True)
+    app.run("0.0.0.0", port=80, debug=True)
