@@ -17,7 +17,7 @@ RUN pip install --upgrade pip setuptools
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Expose the port on which your application will run
-EXPOSE 8000
+
 
 # Set the environment variable to disable parallelism
 ENV TOKENIZERS_PARALLELISM=false
